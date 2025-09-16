@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>That's Showbiz Baby!</title>
+  <style>
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center; 
+      align-items: center;    
+      background: #f0f0f0;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    /* Contenedor del álbum */
+    #album-container {
+      position: relative;
+      width: 90%;
+      max-width: 1400px;
+      height: auto;
+      margin-top: -50px; 
+    }
+
+
+    /* Imagen del álbum */
+    #background {
+      width: 100%;
+      height: auto;
+      display: block;
+      user-select: none;   
+      pointer-events: none; 
+    }
+
+    /* Barra de stickers */
+    #sticker-bar {
+      position: absolute;
+      bottom: -140px; /* debajo del álbum */
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+
+    #sticker-bar img {
+      max-width: auto;
+      max-height: 80px;
+      width: auto;
+      height: auto;
+      cursor: grab;
+    }
+
+    /* Stickers en el álbum */
+    .sticker {
+      position: absolute;
+      max-width: 300px;
+      max-height: 300px;
+      width: auto;
+      height: auto;
+      cursor: grab;
+      user-select: none;
+      resize: both;      
+      overflow: auto;
+    }
+
+    /* Botón reiniciar */
+    #reset-btn {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      padding: 8px 12px;
+      background: #37539c;
+      color: white;
+      border: none;
+      border-radius: 0px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="album-container">
+    <img id="background" src="images/JADE_BLANK_INSIDE.png" alt="Álbum abierto">
+
+    <div id="sticker-bar">
+      <img src="images/angel.png">
+      <img src="images/fav.png">
+      <img src="images/jade-1 (1).png">
+      <img src="images/jade-2.png">
+      <img src="images/jade-3.png">
+      <img src="images/jade-4.png">
+      <img src="images/jade-5.png">
+      <img src="images/jade-6.png">
+      <img src="images/jade-7.png">
+      <img src="images/jade-8.png">
+      <img src="images/jade-14.png">
+      <img src="images/jade-9.png">
+      <img src="images/jade-10.png">
+      <img src="images/jade-11.png">
+      <img src="images/jade-12.png">
+      <img src="images/jade-13.png">
+    </div>
+
+    <button id="reset-btn">RESET</button>
+  </div>
+
+  <script>
+const albumContainer = document.getElementById('album-container');
+const stickerBar = document.getElementById('sticker-bar');
+const resetBtn = document.getElementById('reset-btn');
+
+// Guardamos los stickers originales
+const originalStickers = Array.from(stickerBar.querySelectorAll('img')).map(img => img.src);
+
+// Función para hacer que un sticker sea movible
+function makeDraggable(sticker) {
+  sticker.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+
+    // Solo clonamos si el sticker viene de la barra
+    let newSticker;
+    if (sticker.parentElement === stickerBar) {
+      newSticker = sticker.cloneNode(true);
+      newSticker.classList.add('sticker');
+      albumContainer.appendChild(newSticker);
+
+      // Aplicamos draggable al nuevo sticker
+      makeDraggable(newSticker);
+
+      // Eliminamos el original de la barra
+      sticker.remove();
+    } else {
+      newSticker = sticker;
+    }
+
+    const rect = albumContainer.getBoundingClientRect();
+    let shiftX = e.clientX - newSticker.getBoundingClientRect().left;
+    let shiftY = e.clientY - newSticker.getBoundingClientRect().top;
+
+    function moveAt(pageX, pageY) {
+      newSticker.style.left = pageX - rect.left - shiftX + 'px';
+      newSticker.style.top = pageY - rect.top - shiftY + 'px';
+    }
+
+    function onMouseMove(e) {
+      moveAt(e.clientX, e.clientY);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+
+    document.addEventListener('mouseup', function mouseUpHandler() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    });
+  });
+}
+
+// Aplicamos a todos los stickers iniciales
+document.querySelectorAll('#sticker-bar img').forEach(makeDraggable);
+
+// Botón de reinicio
+resetBtn.addEventListener('click', () => {
+  // Eliminamos todos los stickers del álbum
+  const placedStickers = albumContainer.querySelectorAll('.sticker');
+  placedStickers.forEach(s => s.remove());
+
+  // Restauramos la barra con los stickers originales
+  stickerBar.innerHTML = '';
+  originalStickers.forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    stickerBar.appendChild(img);
+    makeDraggable(img);
+  });
+});
+</script>
+</body>
+</html>
