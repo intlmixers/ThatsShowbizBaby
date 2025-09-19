@@ -215,3 +215,16 @@ function removeSticker(sticker) {
 
   sticker.remove();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const images = document.querySelectorAll(".selectable");
+
+  images.forEach(img => {
+    img.addEventListener("click", () => {
+      const bgImage = img.dataset.bg;
+      // Redirige a la nueva página con parámetro
+      window.location.href = `canvas.html?bg=${encodeURIComponent(bgImage)}`;
+    });
+  });
+});
+

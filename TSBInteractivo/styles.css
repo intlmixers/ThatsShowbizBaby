@@ -20,6 +20,14 @@ body {
   margin-top: -50px;
 }
 
+#album-container2 {
+  position: relative;
+  width: 70%;
+  max-width: 1400px;
+  height: auto;
+  margin-top: -50px;
+}
+
 #background {
   width: 100%;
   height: auto;
@@ -77,7 +85,24 @@ body {
   cursor: pointer;
 }
 
-.btn {
+.toolbar {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* separa izquierda y derecha */
+  align-items: center;
+  padding: 0 20px; /* margen lateral */
+}
+
+.toolbar-left,
+.toolbar-right {
+  display: flex;
+  gap: 10px; /* separación entre botones */
+}
+
+.btn { 
   padding: 8px 12px;
   background: #37539c;
   color: white;
@@ -86,17 +111,6 @@ body {
   cursor: pointer;
 }
 
-#reset-btn {
-  position: absolute;
-  top: -50px;
-  right: 0;
-}
-
-#save-btn {
-  position: absolute;
-  top: -50px;
-  left: 0;
-}
 
 .title {
   position: absolute;
@@ -125,4 +139,60 @@ body {
   font-style: normal;
   font-weight: 100;
   font-stretch: normal;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.image-grid {
+  display: flex;
+  justify-content: center;
+  gap: 60px; /* más espacio entre ellas */
+  margin-bottom: 20px;
+}
+
+.image-grid img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border: 4px solid #37539c;
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+
+.image-grid img:hover {
+  transform: scale(1.05); /* 5% más grande */
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #37539c;
+  letter-spacing: 2px;
+}
+
+.main_container{
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+h1 {
+  color: #37539c ;
 }
